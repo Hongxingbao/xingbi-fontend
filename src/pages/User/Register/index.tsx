@@ -15,13 +15,13 @@ import { flushSync } from 'react-dom';
 import Settings from '../../../../config/defaultSettings';
 import {listChartVoByPageUsingPost} from "@/services/xingbi/chartController";
 import {Link} from "umi";
-import {getLoginUserUsingGet, userLoginUsingPost} from "@/services/xingbi/userController";
-
+import {getLoginUserUsingGet, userLoginUsingPost, userRegisterUsingPost} from "@/services/xingbi/userController";
+import {getInitialState} from "@/app";
 
 const Login: React.FC = () => {
   //const [] = useState<API.LoginResult>({});
   const [type, setType] = useState<string>('account');
-  const { refresh,setInitialState } = useModel('@@initialState');
+  const { refresh, setInitialState } = useModel('@@initialState');
   const containerClassName = useEmotionCss(() => {
     return {
       display: 'flex',
@@ -58,15 +58,23 @@ const Login: React.FC = () => {
   const handleSubmit = async (values: API.UserLoginRequest) => {
     try {
       // 登录
-      const res = await userLoginUsingPost(values);
+      const res = await userRegisterUsingPost(values);
       console.log(res);
       if(res.code === 0){
-        const defaultLoginSuccessMessage = '登录成功！';
+        const defaultLoginSuccessMessage = '注册成功！';
         message.success(defaultLoginSuccessMessage);
-        await fetchUserInfo();
+        //await fetchUserInfo()
         //跳转回登录前的页面
-        const urlParams = new URL(window.location.href).searchParams;
-        history.push(urlParams.get('redirect') || '/');
+        //const urlParams = new URL(window.location.href).searchParams;
+        //history.push(urlParams.get('redirect') || '/');
+
+        /** 此方法会跳转到 redirect 参数所在的位置 */
+        if (!history) return;
+        const {query} = history.location;
+        history.push({
+          pathname: '/user/login',
+          query,
+        });
         refresh();
         return;
       } else {
@@ -74,16 +82,16 @@ const Login: React.FC = () => {
       }
       // 如果失败去设置用户错误信息
     } catch (error) {
-      const defaultLoginFailureMessage = '登录失败，请重试！';
+      const defaultLoginFailureMessage = '注册失败，请重试！';
       console.log(error);
       message.error(defaultLoginFailureMessage);
-    }
+     }
   };
   return (
     <div className={containerClassName}>
       <Helmet>
         <title>
-          {'登录'}- {Settings.title}
+          {'注册'}-
         </title>
       </Helmet>
       <div
@@ -100,9 +108,15 @@ const Login: React.FC = () => {
           logo={<img alt="logo" src="/logo.svg" />}
           title="星智能BI"
           subTitle={'星智能BI是啊星的个人项目'}
+          submitter={
+            {
+              searchConfig:{
+                submitText:'注册'
+            }
+          }}
 
           onFinish={async (values) => {
-            await handleSubmit(values as API.UserLoginRequest);
+            await handleSubmit(values as API.UserRegisterRequest);
           }}
         >
           <Tabs
@@ -112,7 +126,7 @@ const Login: React.FC = () => {
             items={[
               {
                 key: 'account',
-                label: '账号密码登录',
+                label: '用户注册',
               },
             ]}
           />
@@ -147,18 +161,22 @@ const Login: React.FC = () => {
                   },
                 ]}
               />
+              <ProFormText.Password
+                  name="checkPassword"
+                  fieldProps={{
+                    size: 'large',
+                    prefix: <LockOutlined />,
+                  }}
+                  placeholder={'请再次确认密码'}
+                  rules={[
+                    {
+                      required: true,
+                      message: '确认密码是必填项！',
+                    },
+                  ]}
+              />
             </>
           )}
-
-          <div
-            style={{
-              marginBottom: 10,
-              marginLeft:300
-            }}
-          >
-            <Link to={"/user/register"}>注册</Link>
-          </div>
-
         </LoginForm>
 
       </div>
