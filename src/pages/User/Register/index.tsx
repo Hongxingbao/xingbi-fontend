@@ -11,17 +11,13 @@ import { useEmotionCss } from '@ant-design/use-emotion-css';
 import { Helmet, history, useModel } from '@umijs/max';
 import { message, Tabs } from 'antd';
 import React, {useEffect, useState} from 'react';
-import { flushSync } from 'react-dom';
-import Settings from '../../../../config/defaultSettings';
 import {listChartVoByPageUsingPost} from "@/services/xingbi/chartController";
-import {Link} from "umi";
-import {getLoginUserUsingGet, userLoginUsingPost, userRegisterUsingPost} from "@/services/xingbi/userController";
-import {getInitialState} from "@/app";
+import { userRegisterUsingPost} from "@/services/xingbi/userController";
 
-const Login: React.FC = () => {
+const Register: React.FC = () => {
   //const [] = useState<API.LoginResult>({});
   const [type, setType] = useState<string>('account');
-  const { refresh, setInitialState } = useModel('@@initialState');
+  const { refresh } = useModel('@@initialState');
   const containerClassName = useEmotionCss(() => {
     return {
       display: 'flex',
@@ -40,21 +36,6 @@ const Login: React.FC = () => {
     })
   });
 
-
-  const fetchUserInfo = async () => {
-
-    //const userInfo = await initialState?.fetchUserInfo?.();
-    const userInfo = await getLoginUserUsingGet();
-    if (userInfo) {
-      flushSync(() => {
-        setInitialState((s) => ({
-          ...s,
-          currentUser: userInfo,
-        }));
-      });
-    }
-  };
-
   const handleSubmit = async (values: API.UserLoginRequest) => {
     try {
       // 登录
@@ -63,17 +44,10 @@ const Login: React.FC = () => {
       if(res.code === 0){
         const defaultLoginSuccessMessage = '注册成功！';
         message.success(defaultLoginSuccessMessage);
-        //await fetchUserInfo()
-        //跳转回登录前的页面
-        //const urlParams = new URL(window.location.href).searchParams;
-        //history.push(urlParams.get('redirect') || '/');
 
-        /** 此方法会跳转到 redirect 参数所在的位置 */
-        if (!history) return;
-        const {query} = history.location;
+        //if (!history) return;
         history.push({
           pathname: '/user/login',
-          query,
         });
         refresh();
         return;
@@ -184,4 +158,4 @@ const Login: React.FC = () => {
     </div>
   );
 };
-export default Login;
+export default Register;
