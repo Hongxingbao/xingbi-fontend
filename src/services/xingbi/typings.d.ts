@@ -1,4 +1,10 @@
 declare namespace API {
+  type analysisByAsyncUsingPOSTParams = {
+    chartName?: string;
+    chartType?: string;
+    goal?: string;
+  };
+
   type analysisBySynchronizeUsingPOSTParams = {
     chartName?: string;
     chartType?: string;
@@ -73,7 +79,7 @@ declare namespace API {
 
   type BiResponse = {
     chartId?: string;
-    genChart?: string;
+    genChart?: JSON;
     genResult?: string;
   };
 
@@ -130,6 +136,8 @@ declare namespace API {
     name?: string;
   };
 
+  type ComparatorString_ = true;
+
   type DeleteRequest = {
     id?: string;
   };
@@ -147,6 +155,22 @@ declare namespace API {
   type getUserVOByIdUsingGETParams = {
     /** id */
     id?: string;
+  };
+
+  type JSON = {
+    config?: JSONConfig;
+  };
+
+  type JSONConfig = {
+    checkDuplicate?: boolean;
+    dateFormat?: string;
+    ignoreCase?: boolean;
+    ignoreError?: boolean;
+    ignoreNullValue?: boolean;
+    keyComparator?: ComparatorString_;
+    order?: boolean;
+    stripTrailingZeros?: boolean;
+    transientSupport?: boolean;
   };
 
   type LoginUserVO = {
