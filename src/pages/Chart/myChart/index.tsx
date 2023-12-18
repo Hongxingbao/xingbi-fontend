@@ -142,7 +142,7 @@ const myChart: React.FC = () => {
                     <div className="margin-16"></div>
                     {<ReactECharts option={JSON.parse(item.genChart ?? '{}')} />}
                       <Button danger size={"small"} onClick={()=>deleteById(item.id)}>删除图表</Button>
-                      <Button style={{marginLeft:"5px"}} type={"primary"} size={"small"}><Link to={"/chart/updateChart"}>修改图表</Link></Button>
+                      <Button style={{marginLeft:"5px"}} type={"primary"} size={"small"}><Link to={`/chartDetail/${item.id}`}>图表详情</Link></Button>
                   </>
                 )}
 

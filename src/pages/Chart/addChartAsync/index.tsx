@@ -18,6 +18,23 @@ const addChartAsync: React.FC = () => {
   //提交中的状态，默认为未提交
   const [submitting, setSubmitting] = useState<boolean>(false)
   const { TextArea } = Input;
+  const [messageApi, contextHolder] = message.useMessage();
+
+    const success = () => {
+        messageApi.open({
+            type: 'success',
+            content: 'This is a prompt message for success, and it will disappear in 10 seconds',
+            duration: 10,
+        });
+    };
+
+    return (
+        <>
+            {contextHolder}
+            <Button onClick={success}>图表生成好啦，快去看看吧！</Button>
+        </>
+    );
+};
 
   const onFinish = async (values: any) => {
 
