@@ -1,11 +1,11 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
     analysisByAsyncMqUsingPost,
     analysisByAsyncUsingPost,
     analysisBySynchronizeUsingPost
 } from '@/services/xingbi/chartController';
 import {UploadOutlined} from '@ant-design/icons';
-import {Button, Card, Form, Input, message, Select, Space, Upload} from 'antd';
+import {Button, Card, Form, Input, message, Select, Space, Upload,notification} from 'antd';
 import {useForm} from "antd/es/form/Form";
 
 /**
@@ -13,28 +13,11 @@ import {useForm} from "antd/es/form/Form";
  */
 const addChartAsync: React.FC = () => {
 
-  //ant design 用于处理表单
+  //用于处理表单
   const [form] = useForm();
   //提交中的状态，默认为未提交
   const [submitting, setSubmitting] = useState<boolean>(false)
   const { TextArea } = Input;
-  const [messageApi, contextHolder] = message.useMessage();
-
-    const success = () => {
-        messageApi.open({
-            type: 'success',
-            content: 'This is a prompt message for success, and it will disappear in 10 seconds',
-            duration: 10,
-        });
-    };
-
-    return (
-        <>
-            {contextHolder}
-            <Button onClick={success}>图表生成好啦，快去看看吧！</Button>
-        </>
-    );
-};
 
   const onFinish = async (values: any) => {
 
@@ -71,6 +54,7 @@ const addChartAsync: React.FC = () => {
   };
 
   return (
+
     <div className="add-chart-async">
           <Card title={"智能分析"}>
           <Form
