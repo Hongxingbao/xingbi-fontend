@@ -1,5 +1,9 @@
 import React, {useState} from 'react';
-import {analysisByAsyncUsingPost, analysisBySynchronizeUsingPost} from '@/services/xingbi/chartController';
+import {
+    analysisByAsyncMqUsingPost,
+    analysisByAsyncUsingPost,
+    analysisBySynchronizeUsingPost
+} from '@/services/xingbi/chartController';
 import {UploadOutlined} from '@ant-design/icons';
 import {Button, Card, Form, Input, message, Select, Space, Upload} from 'antd';
 import {useForm} from "antd/es/form/Form";
@@ -29,7 +33,7 @@ const addChartAsync: React.FC = () => {
       file:undefined
     }
     try {
-      const res = await analysisByAsyncUsingPost(params,{},values.file.file.originFileObj);
+      const res = await analysisByAsyncMqUsingPost(params,{},values.file.file.originFileObj);
       if(!res?.data){
         message.error("分析失败:"+res.message)
       }else{

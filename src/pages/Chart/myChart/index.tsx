@@ -1,9 +1,10 @@
-import { listMyChartVoByPageUsingPost } from '@/services/xingbi/chartController';
-import { useModel } from '@@/exports';
-import {Avatar, Card, List, message, Result} from 'antd';
+import {deleteChartUsingPost, listMyChartVoByPageUsingPost} from '@/services/xingbi/chartController';
+import {Link, useModel} from '@@/exports';
+import {Avatar, Button, Card, List, message, Modal, Popconfirm, Result, Row} from 'antd';
 import Search from 'antd/es/input/Search';
 import ReactECharts from 'echarts-for-react';
 import React, { useEffect, useState } from 'react';
+import {ExclamationCircleFilled} from "@ant-design/icons";
 
 /**
  * 图表页
@@ -48,6 +49,37 @@ const myChart: React.FC = () => {
     }
     setLoading(false);
   };
+
+    const { confirm } = Modal;
+
+    const deleteById = (id:any) => {
+        confirm({
+            title: '请问你要删除这张图表吗？',
+            icon: <ExclamationCircleFilled />,
+            onOk:async ()=>{
+                try {
+                    console.log(id)
+                    const res = await deleteChartUsingPost({ id });
+                    console.log(res)
+                    if(res.data){
+                        message.success("删除成功");
+                        chartData();
+                    }else {
+                        message.error(res.data.message)
+                    }
+                }catch (e:any){
+                    message.error("删除失败："+e.message)
+                }
+
+            },
+            onCancel() {
+                console.log('Cancel');
+            },
+        });
+    };
+
+
+
 
   //首次加载页面或查询参数变化时，重新加载chartData()
   useEffect(() => {
@@ -105,10 +137,12 @@ const myChart: React.FC = () => {
               <>
                 {item.status === 'succeed' && (
                   <>
-                    <div style={{ marginBottom: 16 }}></div>
+                    <div style={{position: "fixed",right:"20px" }}></div>
                     {'分析目标:' + item.goal}
-                    <div style={{ marginBottom: 16 }}></div>
+                    <div className="margin-16"></div>
                     {<ReactECharts option={JSON.parse(item.genChart ?? '{}')} />}
+                      <Button danger size={"small"} onClick={()=>deleteById(item.id)}>删除图表</Button>
+                      <Button style={{marginLeft:"5px"}} type={"primary"} size={"small"}><Link to={"/chart/updateChart"}>修改图表</Link></Button>
                   </>
                 )}
 
@@ -144,7 +178,6 @@ const myChart: React.FC = () => {
                           />
                       </>
                   }
-
               </>
             </Card>
           </List.Item>

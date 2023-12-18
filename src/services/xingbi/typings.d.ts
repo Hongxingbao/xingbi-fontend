@@ -1,4 +1,10 @@
 declare namespace API {
+  type analysisByAsyncMqUsingPOSTParams = {
+    chartName?: string;
+    chartType?: string;
+    goal?: string;
+  };
+
   type analysisByAsyncUsingPOSTParams = {
     chartName?: string;
     chartType?: string;
