@@ -1,7 +1,7 @@
 import { getChartByIdUsingGet, updateChartUsingPost } from '@/services/xingbi/chartController';
 import { Button, Card, Col, Divider, Form, Input, message, Modal, Row } from 'antd';
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 
 /**
  * 图表页
@@ -12,6 +12,7 @@ const chartDetail: React.FC = () => {
   //用于控制弹窗
   const [isModalVisible, setIsModalVisible] = useState(false);
   const { id } = useParams();
+  const navigate = useNavigate();
   const GREEN_COLOR = 'green';
 
   const chartData = async () => {
@@ -54,12 +55,8 @@ const chartDetail: React.FC = () => {
           >
             <Input />
           </Form.Item>
-          <Form.Item
-            name="genResult"
-            label="分析结论"
-            rules={[{ required: false}]}
-          >
-            <Input.TextArea rows={8}/>
+          <Form.Item name="genResult" label="分析结论" rules={[{ required: false }]}>
+            <Input.TextArea rows={8} />
           </Form.Item>
         </Form>
       </Modal>
@@ -90,18 +87,24 @@ const chartDetail: React.FC = () => {
   const handleCancel = () => {
     setIsModalVisible(false);
   };
+  const handleGoBack = () => {
+    navigate(-1);
+  };
   //首次加载页面或查询参数变化时，重新加载chartData()
   useEffect(() => {
     chartData();
   }, []);
   return (
     <div className="chartDetail">
+      <Button style={{ marginLeft: '5px' }} type={'primary'} size={'small'} onClick={handleGoBack}>
+        返回
+      </Button>
       <Row gutter={24}>
         <Col span={12}>
           <Divider style={{ color: GREEN_COLOR }}>原始数据</Divider>
           <Card>
             <div style={{ whiteSpace: 'pre-wrap', overflow: 'auto' }}>
-              <p style={{ fontWeight: 'bold', color: '#0b93a1', textAlign: 'center' }}>
+              <p style={{ fontWeight: 'bold', color: '#99664d', textAlign: 'center' }}>
                 {chart?.chartData}
               </p>
             </div>
@@ -118,10 +121,10 @@ const chartDetail: React.FC = () => {
           <Divider style={{ color: GREEN_COLOR }}>分析结论</Divider>
           <Card>
             <div style={{ whiteSpace: 'pre-wrap', overflow: 'auto' }}>
-              <p style={{ fontWeight: 'bold', color: '#0b93a1', textAlign: 'left' }}>
+              <p style={{ fontWeight: 'bold', color: '#99664d', textAlign: 'left' }}>
                 {chart?.genResult}
               </p>
-              <Button type={"primary"} size={'small'} onClick={() => editChart(chart)}>
+              <Button type={'primary'} size={'small'} onClick={() => editChart(chart)}>
                 编辑图表
               </Button>
               <EditModal
