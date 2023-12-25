@@ -113,6 +113,7 @@ const chartDetail: React.FC = () => {
         <Col span={12}>
           <Divider style={{ color: GREEN_COLOR }}>图表信息</Divider>
           <Card style={{ color: 'black' }}>
+            <Col>图表ID：{chart?.id}</Col>
             <Col>分析目标：{chart?.goal}</Col>
             <Col>图表类型：{chart?.chartType}</Col>
             <Col>图表名称：{chart?.chartName}</Col>

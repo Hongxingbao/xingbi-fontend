@@ -1,27 +1,20 @@
 import Footer from '@/components/Footer';
-import {
-  LockOutlined,
-  UserOutlined,
-} from '@ant-design/icons';
-import {
-  LoginForm,
-  ProFormText,
-} from '@ant-design/pro-components';
+import { listChartVoByPageUsingPost } from '@/services/xingbi/chartController';
+import { getLoginUserUsingGet, userLoginUsingPost } from '@/services/xingbi/userController';
+import { LockOutlined, UserOutlined } from '@ant-design/icons';
+import { LoginForm, ProFormText } from '@ant-design/pro-components';
 import { useEmotionCss } from '@ant-design/use-emotion-css';
 import { Helmet, history, useModel } from '@umijs/max';
 import { message, Tabs } from 'antd';
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { flushSync } from 'react-dom';
+import { Link } from 'umi';
 import Settings from '../../../../config/defaultSettings';
-import {listChartVoByPageUsingPost} from "@/services/xingbi/chartController";
-import {Link} from "umi";
-import {getLoginUserUsingGet, userLoginUsingPost} from "@/services/xingbi/userController";
-
 
 const Login: React.FC = () => {
   //const [] = useState<API.LoginResult>({});
   const [type, setType] = useState<string>('account');
-  const { refresh,setInitialState } = useModel('@@initialState');
+  const { refresh, setInitialState } = useModel('@@initialState');
   const containerClassName = useEmotionCss(() => {
     return {
       display: 'flex',
@@ -35,18 +28,17 @@ const Login: React.FC = () => {
   });
 
   useEffect(() => {
-    listChartVoByPageUsingPost({}).then(res => {
-      console.log('res',res)
-    })
+    listChartVoByPageUsingPost({}).then((res) => {
+      console.log('res', res);
+    });
   });
 
-
   const fetchUserInfo = async () => {
-
     //const userInfo = await initialState?.fetchUserInfo?.();
     const userInfo = await getLoginUserUsingGet();
     if (userInfo) {
       flushSync(() => {
+        // @ts-ignore
         setInitialState((s) => ({
           ...s,
           currentUser: userInfo,
@@ -60,7 +52,7 @@ const Login: React.FC = () => {
       // 登录
       const res = await userLoginUsingPost(values);
       console.log(res);
-      if(res.code === 0){
+      if (res.code === 0) {
         const defaultLoginSuccessMessage = '登录成功！';
         message.success(defaultLoginSuccessMessage);
         await fetchUserInfo();
@@ -99,8 +91,7 @@ const Login: React.FC = () => {
           }}
           logo={<img alt="logo" src="/logo.svg" />}
           title="星智能BI"
-          subTitle={'星智能BI是啊星的个人项目'}
-
+          subTitle={'星智能BI还在完善当中'}
           onFinish={async (values) => {
             await handleSubmit(values as API.UserLoginRequest);
           }}
@@ -153,14 +144,12 @@ const Login: React.FC = () => {
           <div
             style={{
               marginBottom: 10,
-              marginLeft:300
+              marginLeft: 300,
             }}
           >
-            <Link to={"/user/register"}>注册</Link>
+            <Link to={'/user/register'}>注册</Link>
           </div>
-
         </LoginForm>
-
       </div>
       <Footer />
     </div>

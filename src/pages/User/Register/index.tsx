@@ -1,18 +1,13 @@
 import Footer from '@/components/Footer';
-import {
-  LockOutlined,
-  UserOutlined,
-} from '@ant-design/icons';
-import {
-  LoginForm,
-  ProFormText,
-} from '@ant-design/pro-components';
+import { listChartVoByPageUsingPost } from '@/services/xingbi/chartController';
+import { userRegisterUsingPost } from '@/services/xingbi/userController';
+import { Link } from '@@/exports';
+import { LockOutlined, UserOutlined } from '@ant-design/icons';
+import { LoginForm, ProFormText } from '@ant-design/pro-components';
 import { useEmotionCss } from '@ant-design/use-emotion-css';
 import { Helmet, history, useModel } from '@umijs/max';
 import { message, Tabs } from 'antd';
-import React, {useEffect, useState} from 'react';
-import {listChartVoByPageUsingPost} from "@/services/xingbi/chartController";
-import { userRegisterUsingPost} from "@/services/xingbi/userController";
+import React, { useEffect, useState } from 'react';
 
 const Register: React.FC = () => {
   //const [] = useState<API.LoginResult>({});
@@ -31,9 +26,9 @@ const Register: React.FC = () => {
   });
 
   useEffect(() => {
-    listChartVoByPageUsingPost({}).then(res => {
-      console.log('res',res)
-    })
+    listChartVoByPageUsingPost({}).then((res) => {
+      console.log('res', res);
+    });
   });
 
   const handleSubmit = async (values: API.UserLoginRequest) => {
@@ -41,7 +36,7 @@ const Register: React.FC = () => {
       // 登录
       const res = await userRegisterUsingPost(values);
       console.log(res);
-      if(res.code === 0){
+      if (res.code === 0) {
         const defaultLoginSuccessMessage = '注册成功！';
         message.success(defaultLoginSuccessMessage);
 
@@ -59,14 +54,12 @@ const Register: React.FC = () => {
       const defaultLoginFailureMessage = '注册失败，请重试！';
       console.log(error);
       message.error(defaultLoginFailureMessage);
-     }
+    }
   };
   return (
     <div className={containerClassName}>
       <Helmet>
-        <title>
-          {'注册'}-
-        </title>
+        <title>{'注册'}-</title>
       </Helmet>
       <div
         style={{
@@ -81,14 +74,12 @@ const Register: React.FC = () => {
           }}
           logo={<img alt="logo" src="/logo.svg" />}
           title="星智能BI"
-          subTitle={'星智能BI是啊星的个人项目'}
-          submitter={
-            {
-              searchConfig:{
-                submitText:'注册'
-            }
+          subTitle={'星智能BI还在完善当中'}
+          submitter={{
+            searchConfig: {
+              submitText: '注册',
+            },
           }}
-
           onFinish={async (values) => {
             await handleSubmit(values as API.UserRegisterRequest);
           }}
@@ -136,23 +127,30 @@ const Register: React.FC = () => {
                 ]}
               />
               <ProFormText.Password
-                  name="checkPassword"
-                  fieldProps={{
-                    size: 'large',
-                    prefix: <LockOutlined />,
-                  }}
-                  placeholder={'请再次确认密码'}
-                  rules={[
-                    {
-                      required: true,
-                      message: '确认密码是必填项！',
-                    },
-                  ]}
+                name="checkPassword"
+                fieldProps={{
+                  size: 'large',
+                  prefix: <LockOutlined />,
+                }}
+                placeholder={'请再次确认密码'}
+                rules={[
+                  {
+                    required: true,
+                    message: '确认密码是必填项！',
+                  },
+                ]}
               />
             </>
           )}
+          <div
+            style={{
+              marginRight: 10,
+              marginBottom: 10,
+            }}
+          >
+            <Link to={'/user/login'}>已有账号？点击登录</Link>
+          </div>
         </LoginForm>
-
       </div>
       <Footer />
     </div>

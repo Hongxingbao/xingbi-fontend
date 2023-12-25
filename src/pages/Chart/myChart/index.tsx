@@ -1,6 +1,7 @@
 import {
   deleteChartUsingPost,
   listMyChartVoByPageUsingPost,
+  retryUsingGet,
 } from '@/services/xingbi/chartController';
 import { Link, useModel } from '@@/exports';
 import { ExclamationCircleFilled } from '@ant-design/icons';
@@ -32,6 +33,7 @@ const myChart: React.FC = () => {
     try {
       setLoading(true);
       const res = await listMyChartVoByPageUsingPost(queryParams);
+      console.log('page:' + res);
       if (res.data) {
         if (res.data.records) {
           res.data.records.forEach((data) => {
@@ -78,6 +80,15 @@ const myChart: React.FC = () => {
         console.log('Cancel');
       },
     });
+  };
+
+  /**
+   * 重试
+   * @param chartId
+   */
+  const retry = async (chartId) => {
+    console.log(chartId);
+    await retryUsingGet({ chartId });
   };
 
   //首次加载页面或查询参数变化时，重新加载chartData()
@@ -169,6 +180,9 @@ const myChart: React.FC = () => {
                 {item.status === 'failed' && (
                   <>
                     <Result status="error" title="图表生成失败" subTitle={item.execMessage} />
+                    <Button danger size={'small'} onClick={() => retry(item.id)}>
+                      重新生成
+                    </Button>
                   </>
                 )}
               </>

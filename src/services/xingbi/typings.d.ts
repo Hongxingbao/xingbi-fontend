@@ -134,12 +134,56 @@ declare namespace API {
 
   type ChartUpdateRequest = {
     chartData?: string;
+    chartName?: string;
     chartType?: string;
     genChart?: string;
     genResult?: string;
     goal?: string;
     id?: string;
-    name?: string;
+  };
+
+  type chatContStreamUsingGETParams = {
+    /** msg */
+    msg: string;
+    /** msgUid */
+    msgUid: string;
+  };
+
+  type chatContUsingPOSTParams = {
+    /** msg */
+    msg?: string;
+  };
+
+  type ChatResponse = {
+    ban_round?: number;
+    created?: number;
+    eb_code?: number;
+    error_code?: number;
+    error_msg?: string;
+    function_call?: FunctionCall;
+    id?: string;
+    is_end?: boolean;
+    is_truncated?: boolean;
+    need_clear_history?: boolean;
+    object?: string;
+    result?: string;
+    sentence_id?: number;
+    usage?: Usage;
+  };
+
+  type chatSingleStreamUsingGETParams = {
+    /** msg */
+    msg: string;
+  };
+
+  type chatSingleUsingPOST1Params = {
+    /** msg */
+    msg?: string;
+  };
+
+  type chatSingleUsingPOST2Params = {
+    /** id */
+    id?: number;
   };
 
   type ComparatorString_ = true;
@@ -148,12 +192,22 @@ declare namespace API {
     id?: string;
   };
 
+  type FluxString_ = {
+    prefetch?: number;
+  };
+
+  type FunctionCall = {
+    arguments?: string;
+    name?: string;
+    thoughts?: string;
+  };
+
   type getChartByIdUsingGETParams = {
     /** id */
     id?: string;
   };
 
-  type getUserByIdUsingGETParams = {
+  type getUserByIdUsingGET1Params = {
     /** id */
     id?: string;
   };
@@ -161,6 +215,22 @@ declare namespace API {
   type getUserVOByIdUsingGETParams = {
     /** id */
     id?: string;
+  };
+
+  type ImageData = {
+    b64_image?: string;
+    index?: number;
+    object?: string;
+  };
+
+  type ImageResponse = {
+    created?: number;
+    data?: ImageData[];
+    error_code?: number;
+    error_msg?: string;
+    id?: string;
+    object?: string;
+    usage?: Usage;
   };
 
   type JSON = {
@@ -188,6 +258,12 @@ declare namespace API {
     userProfile?: string;
     userRole?: string;
   };
+
+  type MonoChatResponse_ = true;
+
+  type MonoImageResponse_ = true;
+
+  type MonoPromptResponse_ = true;
 
   type OrderItem = {
     asc?: boolean;
@@ -233,8 +309,51 @@ declare namespace API {
     total?: string;
   };
 
+  type PluginUsage = {
+    abstract_tokens?: number;
+    name?: string;
+    parse_tokens?: number;
+    search_tokens?: number;
+    total_tokens?: number;
+  };
+
+  type PromptErrMessage = {
+    global?: string;
+  };
+
+  type PromptResponse = {
+    code?: string;
+    error_code?: number;
+    error_msg?: string;
+    log_id?: string;
+    message?: PromptErrMessage;
+    result?: PromptResult;
+    status?: number;
+    success?: boolean;
+  };
+
+  type PromptResult = {
+    content?: string;
+    templateContent?: string;
+    templateId?: string;
+    templateName?: string;
+    templateVariables?: string;
+  };
+
+  type retryUsingGETParams = {
+    /** chartId */
+    chartId?: string;
+  };
+
   type uploadFileUsingPOSTParams = {
     biz?: string;
+  };
+
+  type Usage = {
+    completion_tokens?: number;
+    plugins?: PluginUsage[];
+    prompt_tokens?: number;
+    total_tokens?: number;
   };
 
   type User = {
