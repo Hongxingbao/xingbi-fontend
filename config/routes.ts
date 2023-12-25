@@ -22,7 +22,6 @@ export default [
       { path: '/admin/sub-page', component: './Admin' },
     ],
   },
-  { icon: 'table', path: '/list', component: './TableList', name: '表格页' },
   { icon: 'robot', path: '/add_chart', component: './Chart/addChart', name: '图表生成(同步)' },
   {
     icon: 'robot',
