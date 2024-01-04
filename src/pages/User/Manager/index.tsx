@@ -56,7 +56,7 @@ const UserProfile = () => {
   };
 
   const handleRecharge = () => {
-    message.info('跳转到充值积分页面');
+    message.info('敬请期待');
   };
 
   const handleEditProfile = () => {
